@@ -1,0 +1,208 @@
+{% extends 'product_base.html' %}
+
+{% block title %}系统配置中心{% endblock %}
+{% block introduct %}高级系统参数与全局通知偏好管理{% endblock %}
+
+{% block style %}
+<style>
+    /* 深色科技背景容器 */
+    .settings-container {
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        min-height: calc(100vh - 120px);
+        border-radius: 32px;
+        color: #f8fafc;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    /* 气派的大型通栏卡片 */
+    .premium-card {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 28px;
+        padding: 40px;
+        transition: all 0.3s ease;
+    }
+
+    /* 身份信息输入框 */
+    .tech-input {
+        width: 100%;
+        background: rgba(0, 0, 0, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 16px 20px;
+        color: white;
+        font-size: 15px;
+        transition: all 0.3s;
+    }
+    .tech-input:focus {
+        border-color: #22c55e;
+        background: rgba(0, 0, 0, 0.3);
+        outline: none;
+        box-shadow: 0 0 15px rgba(34, 197, 94, 0.2);
+    }
+
+    /* 通知项卡片网格布局 */
+    .setting-group-card {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 24px;
+        padding: 28px;
+        transition: all 0.3s ease;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+
+    .setting-group-card:hover {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(34, 197, 94, 0.4);
+        transform: translateY(-4px);
+    }
+
+    /* 气派的大型科技开关 */
+    .giant-switch {
+        min-width: 68px;
+        height: 34px;
+        background: #334155;
+        border-radius: 17px;
+        position: relative;
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .giant-switch::after {
+        content: '';
+        position: absolute;
+        width: 26px;
+        height: 26px;
+        background: white;
+        border-radius: 50%;
+        top: 4px;
+        left: 4px;
+        transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+
+    /* 开关激活状态 */
+    .active-switch {
+        background: linear-gradient(90deg, #22c55e, #16a34a) !important;
+        box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
+    }
+
+    .active-switch::after {
+        transform: translateX(34px);
+    }
+
+    /* 保存按钮 */
+    .btn-save-global {
+        background: linear-gradient(90deg, #22c55e, #16a34a);
+        padding: 18px 50px;
+        border-radius: 16px;
+        font-size: 16px;
+        font-weight: 800;
+        color: white;
+        box-shadow: 0 8px 25px rgba(34, 197, 94, 0.3);
+        transition: all 0.3s;
+    }
+    .btn-save-global:hover {
+        transform: scale(1.05);
+        box-shadow: 0 12px 35px rgba(34, 197, 94, 0.5);
+    }
+</style>
+{% endblock %}
+
+{% block main %}
+<section class="p-10">
+    <div class="settings-container p-12 space-y-10">
+
+        <div class="premium-card">
+            <div class="flex items-center gap-6 mb-10">
+                <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-3xl shadow-xl">
+                    👤
+                </div>
+                <div>
+                    <h2 class="text-2xl font-black">身份识别档案</h2>
+                    <p class="text-gray-400 text-sm mt-1 font-mono uppercase tracking-widest">ID: AGRI-TECH-ADMIN-001</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="space-y-3">
+                    <label class="text-xs font-bold text-gray-500 uppercase tracking-widest ml-1">管理名称 (Full Name)</label>
+                    <input type="text" class="tech-input" value="主控室管理员">
+                </div>
+                <div class="space-y-3">
+                    <label class="text-xs font-bold text-gray-500 uppercase tracking-widest ml-1">通信地址 (Email)</label>
+                    <input type="email" class="tech-input bg-white/5 border-white/5 cursor-not-allowed text-gray-500" value="admin@agritekai.com" disabled>
+                </div>
+            </div>
+        </div>
+
+        <div class="premium-card">
+            <div class="flex items-center justify-between mb-10">
+                <h3 class="text-2xl font-bold flex items-center gap-3">
+                    <span class="text-green-500">🔔</span> 通讯预警设置
+                </h3>
+                <div class="px-4 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-green-500 text-[10px] font-black uppercase tracking-tighter">
+                    Real-time Sync Active
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="setting-group-card">
+                    <div class="pr-6">
+                        <h4 class="text-lg font-bold">害虫警报</h4>
+                        <p class="text-sm text-gray-400 mt-2 leading-relaxed">接收害虫和疾病爆发的实时监测警报，自动关联无人机防御系统。</p>
+                    </div>
+                    <div class="giant-switch active-switch" onclick="toggleSwitch(this)"></div>
+                </div>
+
+                <div class="setting-group-card">
+                    <div class="pr-6">
+                        <h4 class="text-lg font-bold">收益更新</h4>
+                        <p class="text-sm text-gray-400 mt-2 leading-relaxed">获取产量预测和收获计划的最新波动，同步至市场交易系统。</p>
+                    </div>
+                    <div class="giant-switch active-switch" onclick="toggleSwitch(this)"></div>
+                </div>
+
+                <div class="setting-group-card">
+                    <div class="pr-6">
+                        <h4 class="text-lg font-bold">资源警告</h4>
+                        <p class="text-sm text-gray-400 mt-2 leading-relaxed">当肥料、水分或电力消耗偏离模型基准 5% 时触发即时预警。</p>
+                    </div>
+                    <div class="giant-switch active-switch" onclick="toggleSwitch(this)"></div>
+                </div>
+
+                <div class="setting-group-card">
+                    <div class="pr-6">
+                        <h4 class="text-lg font-bold">每周报告</h4>
+                        <p class="text-sm text-gray-400 mt-2 leading-relaxed">每周一 08:00 生成农场运行效能深度审计报告，发送至管理终端。</p>
+                    </div>
+                    <div class="giant-switch" onclick="toggleSwitch(this)"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex justify-between items-center pt-6">
+            <button class="text-gray-500 hover:text-white transition-colors text-sm font-bold flex items-center gap-2">
+                <span>🔄</span> 恢复初始配置
+            </button>
+            <div class="flex gap-6">
+                <button class="px-10 py-4 rounded-xl font-bold text-gray-400 hover:bg-white/5 transition-all">放弃修改</button>
+                <button class="btn-save-global">保存并同步至云端</button>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block js %}
+<script>
+    // 切换开关状态的逻辑
+    function toggleSwitch(element) {
+        element.classList.toggle('active-switch');
+        // 这里可以添加 AJAX 或 Fetch 请求，将设置同步到后端
+    }
+</script>
+{% endblock %}

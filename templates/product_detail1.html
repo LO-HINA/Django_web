@@ -1,0 +1,213 @@
+{% extends 'product_base.html' %}
+{% block style %}
+    /* 进度条基础容器 */
+.progress-bar-container {
+    height: 8px;
+    border-radius: 4px;
+    background-color: #f3f4f6; /* 未填充部分的浅灰色背景 */
+    overflow: hidden;
+    width: 100%;
+}
+
+/* 进度条填充通用样式 */
+.progress-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+/* 严格对应效果图的颜色类 */
+.bg-fill-green { background-color: #16a34a !important; }  /* 绿色 - 水资源 */
+.bg-fill-red { background-color: #ef4444 !important; }    /* 红色 - 肥料超标 */
+.bg-fill-orange { background-color: #f97316 !important; } /* 橙色 - 农药 */
+
+/* 修正你代码中出现的错误类名引用 */
+.bg-fill-green-light { background-color: #16a34a !important; }
+
+/* 百分比标签的背景颜色 */
+.badge-dark-green { background-color: #dcfce7; color: #16a34a; }
+.badge-dark-red { background-color: #fee2e2; color: #ef4444; }
+.badge-dark-orange { background-color: #ffedd5; color: #f97316; }
+    /* 修改原有的 .stat-card 样式，确保平滑过渡 */
+.stat-card {
+    background-color: white;
+    border: 1px solid #f0f0f0;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.01);
+
+    /* 核心 1：设置所有属性变化的过渡时间，让变大变小过程不生硬 */
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    cursor: pointer;
+    user-select: none; /* 防止点击太快选中文本 */
+}
+
+/* 悬浮效果：稍微浮起并加深阴影 */
+.stat-card:hover {
+    transform: translateY(-4px); /* 向上微调 */
+    box-shadow: 0 12px 30px rgba(0,0,0,0.06);
+    border-color: #e0e0e0;
+}
+
+/* 核心 2：点击（按压）效果 */
+.stat-card:active {
+    /* 微微放大 (1.02倍) 并稍微增加浮起高度 */
+    transform: translateY(-6px) scale(1.02);
+    /* 增加阴影扩散范围，营造“离桌面更远”的视觉错觉 */
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    background-color: #fafafa; /* 点击时背景微变暗，增加反馈 */
+}
+{% endblock %}
+{% block title %}仪表盘概述{% endblock %}
+{% block introduct %}对您的农业运营进行实时监控{% endblock %}
+
+{% block main %}
+<section class="p-10 space-y-10">
+            <div>
+                <h1 class="text-3xl font-bold tracking-tight">下午好, 用户名字!</h1>
+                <p class="text-gray-500 mt-2">这是您农场的实时监测数据与报告。</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="stat-card flex items-center gap-6">
+                    <div class="text-4xl text-green-600">🌡️</div>
+                    <div>
+                        <p class="text-xs text-gray-400 font-bold uppercase tracking-wider mb-1">平均温度</p>
+                        <h3 class="text-4xl font-semibold tracking-tight">24.9°C</h3>
+                        <div class="progress-bar-container mt-3.5">
+                            <div class="progress-bar-fill bg-fill-green" style="width: 80%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="stat-card flex items-center gap-6">
+                    <div class="text-4xl text-blue-600">💧</div>
+                    <div>
+                        <p class="text-xs text-gray-400 font-bold uppercase tracking-wider mb-1">土壤湿度</p>
+                        <h3 class="text-4xl font-semibold tracking-tight">46.4%</h3>
+                        <div class="progress-bar-container mt-3.5">
+                            <div class="progress-bar-fill bg-fill-blue" style="width: 65%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="stat-card flex items-center gap-6">
+                    <div class="text-4xl text-green-600">🍃</div>
+                    <div>
+                        <p class="text-xs text-gray-400 font-bold uppercase tracking-wider mb-1">空气湿度</p>
+                        <h3 class="text-4xl font-semibold tracking-tight">66.1%</h3>
+                        <div class="progress-bar-container mt-3.5">
+                            <div class="progress-bar-fill bg-fill-green" style="width: 75%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="stat-card flex items-center gap-6">
+                    <div class="text-4xl text-red-600">🚨</div>
+                    <div>
+                        <p class="text-xs text-gray-400 font-bold uppercase tracking-wider mb-1">活跃警报</p>
+                        <h3 class="text-4xl font-semibold tracking-tight">3 <span class="text-lg font-normal text-red-500">处需解决</span></h3>
+                        <div class="progress-bar-container mt-3.5">
+                            <div class="progress-bar-fill bg-fill-red" style="width: 100%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div class="stat-card p-0">
+                    <div class="p-8 pb-3 border-b border-gray-100 flex items-center justify-between">
+                        <h3 class="text-xl font-semibold tracking-tight">实时作物状态</h3>
+                        <a href="#" class="text-sm text-green-600 hover:font-medium">查看所有设备 →</a>
+                    </div>
+                    <div class="p-6 space-y-6">
+                        <div class="stat-card rounded-2xl p-6 border-transparent bg-green-50/20 hover:border-gray-100 flex items-center justify-between">
+                            <div>
+                                <p class="text-lg font-semibold tracking-tight">麦田 A</p>
+                                <p class="text-sm text-gray-500 mt-0.5">北区</p>
+                                <div class="flex gap-6 mt-3.5 text-xs">
+                                    <span>温度: <strong class="font-semibold">24.3°C</strong></span>
+                                    <span>土壤湿度: <strong class="font-semibold">47.0%</strong></span>
+                                    <span>空气湿度: <strong class="font-semibold">65.9%</strong></span>
+                                </div>
+                            </div>
+                            <span class="badge badge-excellent">优 excellent</span>
+                        </div>
+                        <div class="stat-card rounded-2xl p-6 border-transparent bg-blue-50/20 hover:border-gray-100 flex items-center justify-between">
+                            <div>
+                                <p class="text-lg font-semibold tracking-tight">玉米地 B</p>
+                                <p class="text-sm text-gray-500 mt-0.5">东区</p>
+                                <div class="flex gap-6 mt-3.5 text-xs">
+                                    <span>温度: <strong class="font-semibold">26.0°C</strong></span>
+                                    <span>土壤湿度: <strong class="font-semibold">41.9%</strong></span>
+                                    <span>空气湿度: <strong class="font-semibold">72.8%</strong></span>
+                                </div>
+                            </div>
+                            <span class="badge badge-good">良 good</span>
+                        </div>
+                        <div class="stat-card rounded-2xl p-6 border-transparent bg-orange-50/20 hover:border-gray-100 flex items-center justify-between">
+                            <div>
+                                <p class="text-lg font-semibold tracking-tight">大豆田 C</p>
+                                <p class="text-sm text-gray-500 mt-0.5">南区</p>
+                                <div class="flex gap-6 mt-3.5 text-xs">
+                                    <span>温度: <strong class="font-semibold">26.6°C</strong></span>
+                                    <span>土壤湿度: <strong class="font-semibold">53.5%</strong></span>
+                                    <span>空气湿度: <strong class="font-semibold">64.1%</strong></span>
+                                </div>
+                            </div>
+                            <span class="badge badge-fair">中 fair</span>
+                        </div>
+                        <div class="stat-card rounded-2xl p-6 border-transparent bg-blue-50/20 hover:border-gray-100 flex items-center justify-between">
+                            <div>
+                                <p class="text-lg font-semibold tracking-tight">大米区 D (数据待更新)</p>
+                                <p class="text-sm text-gray-500 mt-0.5">西 Section</p>
+                                <div class="flex gap-6 mt-3.5 text-xs">
+                                    <span>温度: <strong class="font-semibold">--°C</strong></span>
+                                    <span>土壤湿度: <strong class="font-semibold">--%</strong></span>
+                                    <span>空气湿度: <strong class="font-semibold">--%</strong></span>
+                                </div>
+                            </div>
+                            <span class="badge badge-good">良 good</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card space-y-10">
+                    <div class="border-b border-gray-100 pb-3 flex items-center justify-between">
+                        <h3 class="text-xl font-semibold tracking-tight">资源消耗</h3>
+                        <a href="#" class="text-sm text-green-600 hover:font-medium">配置详情 →</a>
+                    </div>
+
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium">水资源</span>
+                            <span class="badge badge-dark-green">85%</span>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar-fill bg-fill-green" style="width: 85%"></div>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-1.5 font-medium tracking-tight">850.9 / 1000 L/天</p>
+                    </div>
+
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium">肥料 (已超标)</span>
+                            <span class="badge badge-dark-red">115%</span>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar-fill bg-fill-red" style="width: 100%"></div>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-1.5 font-medium tracking-tight">46.0 / 40 kg/公顷</p>
+                    </div>
+
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium">农药</span>
+                            <span class="badge badge-dark-orange">71%</span>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar-fill bg-fill-orange" style="width: 71%"></div>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-1.5 font-medium tracking-tight">10.6 / 15 L/公顷</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+{% endblock %}

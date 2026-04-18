@@ -1,0 +1,214 @@
+{% extends 'product_base.html' %}
+
+{% block title %}害虫与病害监测{% endblock %}
+{% block introduct %}基于深度学习的视觉识别系统，实时捕捉作物病理变化。{% endblock %}
+
+{% block style %}
+<style>
+    /* 核心卡片样式 */
+    .big-card {
+        background: white;
+        border-radius: 24px;
+        padding: 40px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.03);
+    }
+
+    /* 模拟 AI 监控视频容器 */
+    .ai-monitor-container {
+        position: relative;
+        width: 100%;
+        height: 540px;
+        background: #000;
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+    /* 模拟扫描线动画 */
+    .scanning-line {
+        position: absolute;
+        width: 100%;
+        height: 2px;
+        background: rgba(34, 197, 94, 0.5);
+        box-shadow: 0 0 15px #22c55e;
+        top: 0;
+        animation: scan 4s linear infinite;
+        z-index: 10;
+    }
+
+    @keyframes scan {
+        0% { top: 0; }
+        100% { top: 100%; }
+    }
+
+    /* AI 锁定框 */
+    .target-box {
+        position: absolute;
+        border: 2px solid #ef4444;
+        background: rgba(239, 68, 68, 0.1);
+        z-index: 20;
+    }
+    .target-label {
+        position: absolute;
+        top: -25px;
+        left: -2px;
+        background: #ef4444;
+        color: white;
+        font-size: 10px;
+        font-weight: bold;
+        padding: 2px 6px;
+        white-space: nowrap;
+    }
+
+    .risk-chart-container {
+        position: relative;
+        height: 300px;
+        width: 100%;
+    }
+
+    .giant-number {
+        font-size: 3.5rem;
+        font-weight: 800;
+        line-height: 1;
+    }
+</style>
+{% endblock %}
+
+{% block main %}
+<section class="p-10 space-y-10">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+
+        <div class="lg:col-span-2 big-card !p-6 bg-gray-900">
+            <div class="flex justify-between items-center mb-4 px-2">
+                <div class="flex items-center gap-3">
+                    <span class="w-3 h-3 rounded-full bg-red-500 animate-pulse"></span>
+                    <span class="text-xs font-bold text-white uppercase tracking-widest">Live AI Analysis - Camera 04</span>
+                </div>
+                <span class="text-xs font-mono text-gray-500">COORD: 34.0522° N, 118.2437° W</span>
+            </div>
+            <div class="ai-monitor-container">
+                <div class="scanning-line"></div>
+                <img src="https://images.unsplash.com/photo-1592982537447-7440770cbfc9?auto=format&fit=crop&q=80&w=2000" class="w-full h-full object-cover opacity-60 grayscale" alt="Field">
+
+                <div class="target-box" style="top: 25%; left: 35%; width: 120px; height: 100px;">
+                    <span class="target-label">APHIDS DETECTED (94%)</span>
+                </div>
+                <div class="target-box" style="top: 60%; left: 55%; width: 80px; height: 80px; border-color: #f59e0b;">
+                    <span class="target-label" style="background: #f59e0b;">LEAF RUST POTENTIAL (72%)</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="lg:col-span-1 space-y-8">
+            <div class="big-card">
+                <p class="text-sm font-bold text-gray-400 uppercase tracking-widest">病害威胁指数</p>
+                <div class="flex items-baseline gap-2 mt-4 text-red-600">
+                    <span class="giant-number">7.8</span>
+                    <span class="text-xl font-bold">/ 10</span>
+                </div>
+                <div class="mt-8 space-y-6">
+                    <div>
+                        <div class="flex justify-between text-xs font-bold mb-2 uppercase">
+                            <span class="text-gray-500">扩散风险 (Spread Risk)</span>
+                            <span class="text-red-600">HIGH</span>
+                        </div>
+                        <div class="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
+                            <div class="h-full bg-red-500" style="width: 82%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-xs font-bold mb-2 uppercase">
+                            <span class="text-gray-500">检测置信度 (Confidence)</span>
+                            <span class="text-green-600">94.2%</span>
+                        </div>
+                        <div class="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
+                            <div class="h-full bg-green-500" style="width: 94%"></div>
+                        </div>
+                    </div>
+                </div>
+                <button class="w-full mt-10 py-4 bg-red-600 text-white rounded-xl font-bold hover:bg-red-700 transition-colors">
+                    立即启动无人机防治
+                </button>
+            </div>
+
+            <div class="big-card bg-gray-50">
+                <h4 class="text-sm font-bold text-gray-800 mb-4">异常事件摘要</h4>
+                <ul class="space-y-4">
+                    <li class="flex gap-4">
+                        <span class="text-red-500 font-bold">14:20</span>
+                        <p class="text-sm text-gray-600">区域 B-1 发现蚜虫聚集点</p>
+                    </li>
+                    <li class="flex gap-4">
+                        <span class="text-gray-400 font-bold">12:05</span>
+                        <p class="text-sm text-gray-600">系统自动识别完成：无大面积病害</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="big-card">
+        <div class="flex items-end justify-between mb-10">
+            <div>
+                <span class="text-xs font-black text-red-600 uppercase tracking-widest">Historical Data</span>
+                <h3 class="text-3xl font-bold text-gray-900 mt-2">区域病害压力趋势</h3>
+            </div>
+            <select class="bg-gray-50 border-none text-sm font-bold rounded-lg px-4 py-2 outline-none">
+                <option>过去 7 天</option>
+                <option>过去 30 天</option>
+            </select>
+        </div>
+        <div class="risk-chart-container">
+            <canvas id="riskTrendChart"></canvas>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const ctx = document.getElementById('riskTrendChart').getContext('2d');
+
+        // 创建红色渐变
+        const redGradient = ctx.createLinearGradient(0, 0, 0, 300);
+        redGradient.addColorStop(0, 'rgba(239, 68, 68, 0.3)');
+        redGradient.addColorStop(1, 'rgba(239, 68, 68, 0)');
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: '病害压力指数',
+                    data: [2.1, 2.5, 4.8, 3.2, 5.5, 7.8, 6.9],
+                    borderColor: '#ef4444',
+                    borderWidth: 4,
+                    pointBackgroundColor: '#fff',
+                    pointBorderWidth: 2,
+                    pointRadius: 4,
+                    tension: 0.4,
+                    fill: true,
+                    backgroundColor: redGradient
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: '#f9fafb' },
+                        ticks: { color: '#9ca3af', font: { weight: 'bold' } }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#9ca3af', font: { weight: 'bold' } }
+                    }
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

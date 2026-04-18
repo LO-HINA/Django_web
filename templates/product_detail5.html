@@ -1,0 +1,279 @@
+{% extends 'product_base.html' %}
+
+{% block title %}资源调度与分配{% endblock %}
+{% block introduct %}全场域农资动态分配，实现零浪费农业生产。{% endblock %}
+
+{% block style %}
+<style>
+    /* 核心卡片样式：大画幅、圆润、呼吸感 */
+    .big-card {
+        background: white;
+        border-radius: 24px;
+        padding: 40px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.03);
+        height: 100%;
+    }
+
+    /* 趋势图容器 */
+    .big-chart-container {
+        position: relative;
+        height: 450px;
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    /* 巨大的数字展示 */
+    .giant-number {
+        font-size: 4rem;
+        font-weight: 800;
+        letter-spacing: -2px;
+        line-height: 1;
+    }
+
+    /* 通栏进度条背景 */
+    .horizontal-stock-track {
+        width: 100%;
+        height: 12px;
+        background: #f3f4f6;
+        border-radius: 99px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* 进度条填充动画 */
+    .horizontal-stock-fill {
+        height: 100%;
+        border-radius: 99px;
+        transition: width 1.5s cubic-bezier(0.1, 0, 0.2, 1);
+    }
+
+    /* 分类标签样式 */
+    .legend-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 4px;
+    }
+</style>
+{% endblock %}
+
+{% block main %}
+<section class="p-10 space-y-10">
+
+    <div class="big-card">
+        <div class="flex items-end justify-between mb-10">
+            <div>
+                <span class="text-xs font-black text-blue-600 uppercase tracking-widest">Global Allocation</span>
+                <h3 class="text-3xl font-bold text-gray-900 mt-2">资源消耗趋势大盘</h3>
+            </div>
+            <div class="flex gap-8 text-right">
+                <div>
+                    <p class="text-xs text-gray-400 font-bold uppercase">本周消耗总计</p>
+                    <p class="text-2xl font-black text-gray-800">12,840 kg</p>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-400 font-bold uppercase">效率提升</p>
+                    <p class="text-2xl font-black text-green-500">+12.5%</p>
+                </div>
+            </div>
+        </div>
+        <div class="big-chart-container">
+            <canvas id="resourceMainChart"></canvas>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+        <div class="big-card border-t-8 border-blue-500">
+            <p class="text-sm font-bold text-gray-400 uppercase">肥料储备 (Fertilizer)</p>
+            <div class="flex items-baseline gap-2 mt-4">
+                <span class="giant-number text-gray-900">85</span>
+                <span class="text-xl font-bold text-gray-400">%</span>
+            </div>
+            <div class="horizontal-stock-track mt-8">
+                <div class="horizontal-stock-fill bg-blue-500" style="width: 85%"></div>
+            </div>
+            <p class="text-xs text-gray-400 mt-6 font-medium">预计可支撑：14 天作业</p>
+        </div>
+
+        <div class="big-card border-t-8 border-green-500">
+            <p class="text-sm font-bold text-gray-400 uppercase">农药储备 (Pesticide)</p>
+            <div class="flex items-baseline gap-2 mt-4">
+                <span class="giant-number text-gray-900">42</span>
+                <span class="text-xl font-bold text-gray-400">%</span>
+            </div>
+            <div class="horizontal-stock-track mt-8">
+                <div class="horizontal-stock-fill bg-green-500" style="width: 42%"></div>
+            </div>
+            <p class="text-xs text-orange-500 mt-6 font-bold">⚠️ 低于警戒线，请及时补充</p>
+        </div>
+
+        <div class="big-card border-t-8 border-gray-800">
+            <p class="text-sm font-bold text-gray-400 uppercase">机械燃料 (Fuel)</p>
+            <div class="flex items-baseline gap-2 mt-4">
+                <span class="giant-number text-gray-900">60</span>
+                <span class="text-xl font-bold text-gray-400">%</span>
+            </div>
+            <div class="horizontal-stock-track mt-8">
+                <div class="horizontal-stock-fill bg-gray-800" style="width: 60%"></div>
+            </div>
+            <p class="text-xs text-gray-400 mt-6 font-medium">当前油价：¥7.82 / L</p>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+
+        <div class="big-card">
+            <div class="mb-10">
+                <span class="text-xs font-black text-blue-600 uppercase tracking-widest">Category Distribution</span>
+                <h3 class="text-3xl font-bold text-gray-900 mt-2">资源分配占比</h3>
+            </div>
+            <div class="flex flex-col md:flex-row items-center justify-around gap-8">
+                <div class="relative w-64 h-64">
+                    <canvas id="resourceDoughnutChart"></canvas>
+                    <div class="absolute inset-0 flex flex-col items-center justify-center">
+                        <span class="text-sm font-bold text-gray-400 uppercase">总投入</span>
+                        <span class="text-4xl font-black text-gray-900">100%</span>
+                    </div>
+                </div>
+                <div class="space-y-6">
+                    <div class="flex items-center gap-4">
+                        <div class="legend-dot bg-blue-500"></div>
+                        <div>
+                            <p class="text-sm font-bold text-gray-800">肥料 (60%)</p>
+                            <p class="text-[10px] text-gray-400 font-medium tracking-wider">Main Feedstock</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="legend-dot bg-green-500"></div>
+                        <div>
+                            <p class="text-sm font-bold text-gray-800">种子 (25%)</p>
+                            <p class="text-[10px] text-gray-400 font-medium tracking-wider">Direct Sowing</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="legend-dot bg-gray-800"></div>
+                        <div>
+                            <p class="text-sm font-bold text-gray-800">其他 (15%)</p>
+                            <p class="text-[10px] text-gray-400 font-medium tracking-wider">Miscellaneous</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="big-card">
+            <div class="mb-10">
+                <span class="text-xs font-black text-green-600 uppercase tracking-widest">Operational Status</span>
+                <h3 class="text-3xl font-bold text-gray-900 mt-2">实时作业进度</h3>
+            </div>
+            <div class="space-y-10">
+                <div>
+                    <div class="flex justify-between items-end mb-4">
+                        <div>
+                            <h4 class="text-lg font-bold text-gray-800">自动化喷洒系统 - 北区</h4>
+                            <p class="text-xs text-gray-400 font-medium mt-1">正在进行：第 3/5 阶段</p>
+                        </div>
+                        <span class="text-2xl font-black text-blue-600">72%</span>
+                    </div>
+                    <div class="horizontal-stock-track">
+                        <div class="horizontal-stock-fill bg-blue-500" style="width: 72%"></div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex justify-between items-end mb-4">
+                        <div>
+                            <h4 class="text-lg font-bold text-gray-800">无人机播种监控 - 东区</h4>
+                            <p class="text-xs text-gray-400 font-medium mt-1">预计结束时间：18:45</p>
+                        </div>
+                        <span class="text-2xl font-black text-green-500">45%</span>
+                    </div>
+                    <div class="horizontal-stock-track">
+                        <div class="horizontal-stock-fill bg-green-500" style="width: 45%"></div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex justify-between items-end mb-4">
+                        <div>
+                            <h4 class="text-lg font-bold text-gray-800">土壤改良剂配给</h4>
+                            <p class="text-xs text-gray-400 font-medium mt-1">系统已排队，等待中</p>
+                        </div>
+                        <span class="text-2xl font-black text-gray-300">12%</span>
+                    </div>
+                    <div class="horizontal-stock-track">
+                        <div class="horizontal-stock-fill bg-gray-200" style="width: 12%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+        // --- 1. 大盘趋势图配置 ---
+        const mainCtx = document.getElementById('resourceMainChart').getContext('2d');
+        const blueGradient = mainCtx.createLinearGradient(0, 0, 0, 400);
+        blueGradient.addColorStop(0, 'rgba(59, 130, 246, 0.4)');
+        blueGradient.addColorStop(1, 'rgba(59, 130, 246, 0)');
+
+        new Chart(mainCtx, {
+            type: 'line',
+            data: {
+                labels: ['APR 12', 'APR 13', 'APR 14', 'APR 15', 'APR 16', 'APR 17', 'APR 18'],
+                datasets: [{
+                    label: '资源分配总量',
+                    data: [4500, 5200, 4800, 7000, 6100, 5900, 8000],
+                    borderColor: '#3b82f6',
+                    borderWidth: 4,
+                    pointRadius: 0,
+                    tension: 0.4,
+                    fill: true,
+                    backgroundColor: blueGradient
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: '#f9fafb', drawBorder: false },
+                        ticks: { font: { size: 12, weight: '500' }, color: '#9ca3af' }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { font: { size: 12, weight: '500' }, color: '#9ca3af' }
+                    }
+                }
+            }
+        });
+
+        // --- 2. 资源分布圆环图配置 ---
+        const doughnutCtx = document.getElementById('resourceDoughnutChart').getContext('2d');
+        new Chart(doughnutCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['肥料', '种子', '其他'],
+                datasets: [{
+                    data: [60, 25, 15],
+                    backgroundColor: ['#3b82f6', '#10b981', '#1f2937'],
+                    borderWidth: 0,
+                    hoverOffset: 15
+                }]
+            },
+            options: {
+                cutout: '75%',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } }
+            }
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}首页{% endblock %}
+
+{% block main %}
+<main>
+    <section class="relative w-full h-[700px] bg-black overflow-hidden flex items-center justify-center">
+        <img src="https://images.unsplash.com/photo-1614850523296-d8c1af93d400?q=80&w=2070" class="absolute inset-0 w-full h-full object-cover opacity-80">
+
+        <div class="relative z-10 text-center text-white px-6">
+            <h1 class="text-5xl md:text-7xl font-light tracking-[0.2em] mb-6">HUAWEI Pura 70 系列</h1>
+            <p class="text-xl md:text-2xl font-light tracking-widest mb-12 opacity-90">锐意设计，风向标之作</p>
+            <div class="flex justify-center space-x-6">
+                <button class="px-12 py-3 bg-white text-black font-medium hover:bg-gray-100 transition duration-300">了解更多</button>
+                <button class="px-12 py-3 border border-white text-white font-medium hover:bg-white hover:text-black transition duration-300">立即购买</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="hw-container py-24">
+        <h2 class="text-3xl font-bold text-center mb-16">推荐信息</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="relative aspect-video bg-gray-100 overflow-hidden group">
+                <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1000" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+                <div class="absolute bottom-8 left-8 text-white">
+                    <h3 class="text-2xl font-bold">华为云</h3>
+                </div>
+            </div>
+            </div>
+    </section>
+
+
+
+</main>
+{% endblock %}

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root { --hw-nav-height: 72px; }
+        body { font-family: "PingFang SC", "Microsoft YaHei", sans-serif; overflow-x: hidden; margin: 0; }
+        .hw-container { max-width: 1440px; margin: 0 auto; padding: 0 48px; }
+
+        /* 1. 语言面板：保持你的逻辑 */
+        #language-wrapper {
+            height: 0;
+            overflow: hidden;
+            transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            background: white;
+            border-bottom: 1px solid #eee;
+        }
+        #language-wrapper.active { height: 350px; }
+
+        /* 2. 【核心修复】中间文字向中间收缩并淡出 */
+        #nav-menu {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 1;
+            transform: scale(1);
+        }
+        #nav-menu.searching {
+            opacity: 0;
+            transform: scale(0.9); /* 向中间微缩 */
+            pointer-events: none;
+        }
+
+        /* 3. 【核心修复】搜索栏平滑拉出 */
+        #search-bar-container {
+            position: absolute;
+            right: 48px; /* 紧贴容器右侧内边距 */
+            width: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            background: white;
+            height: 40px;
+        }
+        #search-bar-container.active {
+            width: 400px; /* 宽度适中 */
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-white">
+
+    <div class="bg-black py-2 text-[12px] text-white">
+        <div class="hw-container flex justify-end space-x-6">
+            <a href="#" class="hover:text-gray-400">集团网站</a>
+            <button id="lang-btn" class="hover:text-gray-400 flex items-center">
+                选择区域/语言 <span class="ml-1 text-[10px]">▼</span>
+            </button>
+            <a href="#" class="hover:text-gray-400">登录</a>
+        </div>
+    </div>
+
+    <div id="language-wrapper">
+        <div class="hw-container py-12">
+            <h2 class="text-2xl font-bold mb-8">选择区域/语言</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-sm text-gray-600">
+                <div><span class="text-red-600 font-bold mr-2">></span>China - 简体中文</div>
+                <a href="#" class="hover:text-red-600">Global - English</a>
+                <a href="#" class="hover:text-red-600">Japan - 日本語</a>
+            </div>
+        </div>
+    </div>
+
+    <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 h-[var(--hw-nav-height)] flex items-center">
+        <div class="hw-container w-full flex items-center justify-between relative">
+
+            <div class="flex-none">
+                <img src="https://www.huawei.com/assets/img/logo.png" alt="Huawei" class="h-[18px]">
+            </div>
+
+            <div id="nav-menu" class="hidden lg:flex space-x-12 text-[15px] font-medium">
+                <a href="/product/detail1" class="hover:text-red-600">使用产品</a>
+                <a href="#" class="hover:text-red-600">产品使用手册</a>
+                <a href="#" class="hover:text-red-600">服务与支持</a>
+                <a href="#" class="hover:text-red-600">关于我们</a>
+            </div>
+
+            <div class="flex items-center justify-end">
+                <button id="search-trigger" class="z-10">
+                    <div class="text-xl hover:text-red-600 transition-colors">🔍</div>
+                </button>
+
+                <div id="search-bar-container">
+                    <input type="text" placeholder="搜索" class="w-full border-b border-black bg-transparent py-1 focus:outline-none text-sm">
+                    <button id="close-search" class="ml-4 text-gray-400 hover:text-black text-xl">✕</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    {% block main %}{% endblock %}
+
+    <footer class="bg-[#f7f7f7] pt-12 pb-8 border-t border-gray-200">
+    <div class="hw-container">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-10 text-[14px]">
+
+            <div class="space-y-3">
+                <h4 class="font-bold text-black">关于111</h4>
+                <ul class="space-y-1.5 text-gray-500">
+                    <li><a href="#" class="hover:text-red-600">产品简介</a></li>
+                    <li><a href="#" class="hover:text-red-600">招贤纳士</a></li>
+                </ul>
+            </div>
+
+            <div class="space-y-3">
+                <h4 class="font-bold text-black">发现111</h4>
+                <ul class="space-y-1.5 text-gray-500">
+                    <li><a href="#" class="hover:text-red-600">111技术专栏</a></li>
+                    <li><a href="#" class="hover:text-red-600">智能世界2030</a></li>
+                    <li><a href="#" class="hover:text-red-600">出版物</a></li>
+                </ul>
+            </div>
+
+            <div class="space-y-3">
+                <h4 class="font-bold text-black">我们的产品</h4>
+                <ul class="space-y-1.5 text-gray-500">
+                    <li><a href="#" class="hover:text-red-600">个人租借产品</a></li>
+                    <li><a href="#" class="hover:text-red-600">企业业务产品</a></li>
+                </ul>
+            </div>
+
+            <div class="space-y-3">
+                <h4 class="font-bold text-black">技术支持</h4>
+                <ul class="space-y-1.5 text-gray-500">
+                    <li><a href="#" class="hover:text-red-600">消费者技术支持</a></li>
+                    <li><a href="#" class="hover:text-red-600">云技术支持</a></li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="pt-6 border-t border-gray-200 flex flex-wrap justify-between items-center gap-4 text-[12px] text-gray-400">
+            <div class="flex flex-wrap items-center gap-4">
+                <span>© 1234-5678 没钱技术有限公司</span>
+                <a href="#" class="hover:text-red-600">粤A2-20044005号</a>
+                <a href="#" class="hover:text-red-600">法律声明</a>
+                <a href="#" class="hover:text-red-600">隐私政策</a>
+            </div>
+            <div class="flex items-center space-x-5">
+                <img src="https://www.huawei.com/assets/img/weibo.png" class="w-5 h-5 opacity-50 hover:opacity-100 cursor-pointer">
+                <img src="https://www.huawei.com/assets/img/wechat.png" class="w-5 h-5 opacity-50 hover:opacity-100 cursor-pointer">
+            </div>
+        </div>
+    </div>
+    </footer>
+
+
+    <script>
+        const langBtn = document.getElementById('lang-btn');
+        const wrapper = document.getElementById('language-wrapper');
+        langBtn.onclick = () => { wrapper.classList.toggle('active'); };
+
+        const searchTrigger = document.getElementById('search-trigger');
+        const closeSearch = document.getElementById('close-search');
+        const navMenu = document.getElementById('nav-menu');
+        const searchBar = document.getElementById('search-bar-container');
+
+        searchTrigger.onclick = () => {
+            navMenu.classList.add('searching');   // 文字收缩且淡出
+            searchBar.classList.add('active');    // 搜索栏向左平滑延伸
+            searchTrigger.style.opacity = '0';     // 隐藏原图标
+            searchTrigger.style.pointerEvents = 'none';
+        };
+
+        closeSearch.onclick = () => {
+            navMenu.classList.remove('searching');
+            searchBar.classList.remove('active');
+            searchTrigger.style.opacity = '1';
+            searchTrigger.style.pointerEvents = 'auto';
+        };
+    </script>
+</body>
+</html>

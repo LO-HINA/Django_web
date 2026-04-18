@@ -1,0 +1,185 @@
+{% extends "product_base.html" %}
+
+{#{% block nav_detail2_active %}active{% endblock %}#}
+
+{% block title %}作物监测{% endblock %}
+{% block introduct %}为您提供实时监测数据与报告。{% endblock %}
+{% block script %}<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>{% endblock %}
+{% block style %}
+/* 针对图表容器的高度优化 */
+.chart-container {
+    position: relative;
+    flex-grow: 1;
+    min-height: 250px;
+    width: 100%;
+}
+
+.badge-fair {
+    background-color: #fff7ed !important; /* 极浅橙色背景 */
+    color: #f97316 !important;           /* 鲜艳的橙色文字 */
+    border: 1px solid #ffedd5;           /* 可选：加一个微弱的边框让它更精致 */
+}
+    /* 1. 针对作物列表内的小方块进行优化 */
+.lg\:col-span-1 .stat-card {
+    /* 初始状态：确保有平滑的过渡动画 */
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    will-change: transform, box-shadow; /* 性能优化，防止动画卡顿 */
+}
+
+/* 2. 悬浮状态：稍微浮起 */
+.lg\:col-span-1 .stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+}
+
+/* 3. 点击（按压）状态：实现你想要的悬浮变大效果 */
+.lg\:col-span-1 .stat-card:active {
+    /* 由于这些小方块间距较紧，scale(1.03) 是最合适的比例。
+       继续保持 translateY 向上偏移，增加“悬浮感”。
+    */
+    transform: translateY(-4px) scale(1.03);
+
+    /* 增加更深的阴影，让卡片看起来像是“飘”离了背景层 */
+    box-shadow: 0 15px 30px rgba(0,0,0,0.08);
+
+    /* 点击时背景微变，增加触感反馈 */
+    background-color: #ffffff;
+    z-index: 10; /* 确保放大时不会被下方的卡片遮挡层级 */
+}
+{% endblock %}
+
+{% block main %}
+<section class="p-10 space-y-10">
+    <div>
+        <h1 class="text-3xl font-bold tracking-tight">下午好, 用户名字!</h1>
+        <p class="text-gray-500 mt-2">这是您农场的实时监测数据与报告。</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+        
+        <div class="lg:col-span-1 stat-card p-0 overflow-hidden flex flex-col">
+            <div class="p-8 pb-3 border-b border-gray-100 flex items-center justify-between mb-4">
+                <h3 class="text-xl font-semibold tracking-tight">Your Crops</h3>
+                <a href="#" class="text-sm text-green-600 hover:font-medium">All Devices →</a>
+            </div>
+            
+            <div class="p-6 space-y-4 flex-grow">
+                <div class="stat-card rounded-2xl p-6 border-transparent bg-green-50/20 hover:border-gray-100 flex items-center justify-between cursor-pointer">
+                    <div>
+                        <p class="text-lg font-semibold tracking-tight text-green-600">小麦A区 (North)</p>
+                        <p class="text-xs text-gray-500 mt-0.5">Vegetative 生长期</p>
+                    </div>
+                    <span class="badge badge-excellent">优 Excellent</span>
+                </div>
+                <div class="stat-card rounded-2xl p-6 border border-gray-100 flex items-center justify-between hover:bg-gray-50/50 cursor-pointer">
+                    <div>
+                        <p class="text-lg font-semibold tracking-tight">玉米 B 区 (East)</p>
+                        <p class="text-xs text-gray-500 mt-0.5">Flowering 花期</p>
+                    </div>
+                    <span class="badge badge-excellent">优 Excellent</span>
+                </div>
+                <div class="stat-card rounded-2xl p-6 border border-gray-100 flex items-center justify-between hover:bg-gray-50/50 cursor-pointer">
+                    <div>
+                        <p class="text-lg font-semibold tracking-tight">大豆 C 区 (South)</p>
+                        <p class="text-xs text-gray-500 mt-0.5">Maturation 成熟期</p>
+                    </div>
+                    <span class="badge badge-fair">中 Fair</span>
+                </div>
+                <div class="stat-card rounded-2xl p-6 border border-gray-100 flex items-center justify-between hover:bg-gray-50/50 cursor-pointer">
+                    <div>
+                        <p class="text-lg font-semibold tracking-tight">稻田 D 队 (West)</p>
+                        <p class="text-xs text-gray-500 mt-0.5">Vegetative 生长期</p>
+                    </div>
+                    <span class="badge badge-excellent">优 Excellent</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="lg:col-span-2 stat-card space-y-10 flex flex-col">
+            
+            <div class="space-y-6 flex-none">
+                <div class="pb-3 border-b border-gray-100 flex items-center justify-between">
+                    <h3 class="text-xl font-semibold tracking-tight">小麦A区 (North Section)</h3>
+                    <a href="#" class="text-sm text-green-600 hover:font-medium">Configure →</a>
+                </div>
+                <div class="flex items-center gap-x-12 pt-4 border-t border-gray-100 mt-6">
+                    <div class="flex items-center gap-3">
+                        <span class="text-3xl">🌡️</span>
+                        <div><p class="text-xs text-gray-400">平均温度</p><p class="font-semibold text-lg">24.3 °C</p></div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-3xl">💧</span>
+                        <div><p class="text-xs text-gray-400">土壤湿度</p><p class="font-semibold text-lg text-blue-600">47.0 %</p></div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-3xl">🍃</span>
+                        <div><p class="text-xs text-gray-400">空气湿度</p><p class="font-semibold text-lg">65.9 %</p></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-0 space-y-6 flex-grow flex flex-col">
+                <div class="pb-3 border-b border-gray-100 flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-semibold tracking-tight">实时趋势 (Real-Time Trends)</h3>
+                    <span class="text-green-600 text-sm cursor-pointer hover:font-medium">过去 24 小时 →</span>
+                </div>
+                <div class="chart-container">
+                    <canvas id="trendChart"></canvas>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-x-12 gap-y-6 pt-6 border-t border-gray-100">
+                <div><p class="text-gray-400 text-sm">Location</p><p class="font-semibold text-sm">North Section</p></div>
+                <div><p class="text-gray-400 text-sm">Growth Stage</p><p class="font-semibold text-sm">Vegetative 生长期</p></div>
+                <div><p class="text-gray-400 text-sm">Health Status</p><p class="badge badge-excellent">优 Excellent</p></div>
+                <div><p class="text-gray-400 text-sm">Last Update</p><p class="font-semibold text-gray-900 font-mono text-sm">12:34:56 PM</p></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    const ctx = document.getElementById('trendChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', '24:00'],
+            datasets: [
+                {
+                    label: '温度 (°C)',
+                    data: [20, 18, 22, 26, 24, 21, 19],
+                    borderColor: '#f97316', // 橙色
+                    backgroundColor: 'rgba(249, 115, 22, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                },
+                {
+                    label: '土壤水分 (%)',
+                    data: [45, 46, 44, 47, 47, 48, 46],
+                    borderColor: '#2563eb', // 蓝色
+                    tension: 0.4
+                },
+                {
+                    label: '空气湿度 (%)',
+                    data: [60, 65, 62, 58, 66, 68, 64],
+                    borderColor: '#16a34a', // 绿色
+                    tension: 0.4
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'top', align: 'end' }
+            },
+            scales: {
+                y: {
+                    beginAtZero: false,
+                    grid: { color: '#f3f4f6' }
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}
